@@ -12,3 +12,6 @@ class Cell:
         else:
             next_status = False
         return next_status
+
+    def get_current_status(self):
+        return self.status

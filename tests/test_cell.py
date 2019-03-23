@@ -33,3 +33,11 @@ class TestCell(TestCase):
 
         next_status = cell.calculate_next_status(live_neighbour_count)
         assert next_status == True
+
+    def test_cell_get_current_status(self):
+        coordinate = Coordinate(2, 2)
+        cell = Cell(coordinate, False)
+
+        actual_current_status = cell.get_current_status()
+
+        assert actual_current_status == False
