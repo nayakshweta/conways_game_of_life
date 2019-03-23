@@ -21,3 +21,12 @@ class Grid:
                 live_neighbour_count += 1
 
         return live_neighbour_count
+
+    def calculate_next_grid(self):
+        next_grid = Grid(self.row_count, self.column_count)
+        for cell in self.cells:
+            live_neighbour_count = self.get_live_neighbour_count(cell.coordinate)
+            next_status = cell.calculate_next_status(live_neighbour_count)
+            new_cell = Cell(cell.coordinate, next_status)
+            next_grid.cells.append(new_cell)
+        return next_grid

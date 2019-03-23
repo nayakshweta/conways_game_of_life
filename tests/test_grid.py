@@ -34,4 +34,25 @@ class TestGrid(TestCase):
         actual_live_neighbour_count = grid.get_live_neighbour_count(coordinate)
 
         assert actual_live_neighbour_count == 1
+
+    def test_calculate_next_grid(self):
+        grid = Grid(3, 3)
+        grid.mark_cell(0, 0, False)
+        grid.mark_cell(0, 1, False)
+        grid.mark_cell(0, 2, True)
+        grid.mark_cell(1, 0, False)
+        grid.mark_cell(1, 1, True)
+        grid.mark_cell(1, 2, True)
+        grid.mark_cell(2, 0, False)
+        grid.mark_cell(2, 1, False)
+        grid.mark_cell(2, 2, False)
+
+        next_grid = grid.calculate_next_grid()
+        
+        assert len(next_grid.cells) == 9
+
+        for cell in next_grid.cells:
+            if cell.coordinate == Coordinate(1, 2):
+                actual_status = cell.get_current_status()
+                assert actual_status == True
     
