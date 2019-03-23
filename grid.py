@@ -11,3 +11,13 @@ class Grid:
         coordinate = Coordinate(x, y)
         cell = Cell(coordinate, status)
         self.cells.append(cell)
+    
+    def get_live_neighbour_count(self, coordinate):
+        neighbouring_coordinates = coordinate.get_neighbouring_cordinates(self.row_count, self.column_count)
+        live_neighbour_count = 0
+
+        for cell in self.cells:
+            if cell.coordinate in neighbouring_coordinates and cell.status == True:
+                live_neighbour_count += 1
+
+        return live_neighbour_count
