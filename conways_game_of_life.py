@@ -1,4 +1,6 @@
-
+def get_array_of_strings_from_file(file_path):
+    with open('input_file.txt', 'r') as file:
+        return file.readlines()
 
 if __name__ == '__main__':
     lines = get_array_of_strings_from_file('input_file.txt')
