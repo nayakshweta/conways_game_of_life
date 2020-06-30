@@ -6,7 +6,7 @@ namespace Conways
 {
     public class Grid
     {
-        int[,] _inputGrid;
+        bool[,] _inputGrid;
         public int Rows {get; private set;}
         public int Columns {get; private set;}
         public Grid(int rows, int columns, string[] lines)
@@ -16,7 +16,7 @@ namespace Conways
             if (lines.Length != rows) 
                 throw new System.ArgumentException("Row count does not match.", "rows");
 
-            int[,] grid = new int[Rows,Columns];
+            bool[,] grid = new bool[Rows,Columns];
 
             for(int i=0; i<Rows; i++)
             {
@@ -26,8 +26,8 @@ namespace Conways
                 {
                     char input = lines[i][j];
 
-                    if (input == '.') grid[i, j] = 0;
-                    else if (input == '*') grid[i, j] = 1;
+                    if (input == '.') grid[i, j] = false;
+                    else if (input == '*') grid[i, j] = true;
                     else throw new System.ArgumentException("Character provided does not match", "lines");
                 }
             }
@@ -53,10 +53,7 @@ namespace Conways
                 for (int j=0; j<Columns; j++)
                 {
                     int neighbourCount = DetermineCellNeighbourCount(i, j);
-                    
-                    if ((neighbourCount==2 || neighbourCount==3) && _inputGrid[i, j]==1) newGrid[i, j] = 1;
-                    else if (neighbourCount==3 && _inputGrid[i, j]==0) newGrid[i, j] = 1;
-                    else newGrid[i, j] = 0;
+                    newGrid[i, j] = GetCellNextState(i, j, neighbourCount);
                 }
             }
             return newGrid;
@@ -69,13 +66,23 @@ namespace Conways
             {
                 for (int j=y-1; j<=y+1; j++)
                 {
-                    if (i>=0 && j>=0 && i<_inputGrid.GetLength(0) && j<_inputGrid.GetLength(1) && !(i==x && j==y))
+                    if (i>=0 && j>=0 && i<Rows && j<Columns && !(i==x && j==y))
                     {
-                        if (_inputGrid[i,j]==1) neighbourCount++;
+                        if (_inputGrid[i,j]==true) neighbourCount++;
                     }
                 }
             }
             return neighbourCount;
+        }
+
+        public bool GetCellNextState(int x, int y, int neighbourCount)
+        {
+            if ((neighbourCount==2 || neighbourCount==3) && _inputGrid[x, y]==true) 
+                return true;
+            else if (neighbourCount==3 && _inputGrid[x, y]==false) 
+                return true;
+            else 
+                return false;
         }
 
         public override string ToString()
@@ -85,16 +92,16 @@ namespace Conways
             {
                 for (int j=0; j<Columns; j++)
                 {
-                    if (_inputGrid[i,j] == 1) 
+                    if (_inputGrid[i,j] == true) 
                         retGrid += "*";
-                    else if (_inputGrid[i,j] == 0) 
+                    else if (_inputGrid[i,j] == false) 
                         retGrid += ".";
                 }
                 retGrid += "\n";
             }
             return retGrid;
         }
-        public int this[int i, int j]
+        public bool this[int i, int j]
         {
             get
             {

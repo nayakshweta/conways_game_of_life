@@ -23,9 +23,9 @@ namespace Conways.Tests
         public void GridConstructor_GridCellsMatch()
         {
             _grid = new Grid(4, 8, lines);
-            Assert.AreEqual(_grid[0,0], 0);
-            Assert.AreEqual(_grid[1,4], 1);
-            Assert.AreEqual(_grid[2,3], 1);
+            Assert.AreEqual(_grid[0,0], false);
+            Assert.AreEqual(_grid[1,4], true);
+            Assert.AreEqual(_grid[2,3], true);
         }
 
 
@@ -34,19 +34,36 @@ namespace Conways.Tests
         {
             _grid = new Grid(4, 8, lines);
             Grid nextGrid = _grid.DetermineNextGrid();
-            Assert.AreEqual(nextGrid[1, 4], 1);
-            Assert.AreEqual(nextGrid[2, 4], 1);
-            Assert.AreEqual(nextGrid[2, 3], 1);
-            Assert.AreEqual(nextGrid[0, 0], 0);
-            Assert.AreEqual(nextGrid[0, 1], 0);
-            Assert.AreEqual(nextGrid[0, 2], 0);
+            Assert.AreEqual(nextGrid[1, 4], true);
+            Assert.AreEqual(nextGrid[2, 4], true);
+            Assert.AreEqual(nextGrid[2, 3], true);
+            Assert.AreEqual(nextGrid[0, 0], false);
+            Assert.AreEqual(nextGrid[0, 1], false);
+            Assert.AreEqual(nextGrid[0, 2], false);
         }
 
+        [Test]
         public void DetermineCellNeighbourCount_CountReturns3()
         {
             _grid = new Grid(4, 8, lines);
             int count = _grid.DetermineCellNeighbourCount(1, 3);
             Assert.AreEqual(count, 3);
+        }
+
+        [Test]
+        public void GetCellNextState_NeighbourCount2CurrentStateAlive_ReturnsTrue()
+        {
+            _grid = new Grid(4, 8, lines);
+            bool nextState = _grid.GetCellNextState(1, 3, 3);
+            Assert.IsTrue(nextState);
+        }
+        
+        [Test]
+        public void GetCellNextState_NeighbourCount2CurrentStateDead_ReturnsFalse()
+        {
+            _grid = new Grid(4, 8, lines);
+            bool nextState = _grid.GetCellNextState(3, 3, 2);
+            Assert.IsFalse(nextState);
         }
     }
 }
